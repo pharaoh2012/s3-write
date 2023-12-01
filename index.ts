@@ -1,30 +1,40 @@
 import { serve } from "https://deno.land/std@0.140.0/http/server.ts";
+import { S3, S3Bucket } from "https://deno.land/x/s3@0.5.0/mod.ts";
 
 async function handler(req: Request): Promise<Response> {
   console.info(req.headers);
-  const url = new URL(req.url);
-  const q = new URLSearchParams(url.search);
-  const u = q.get("url");
+  // const key = new URL(req.key);
+  // // const q = new URLSearchParams(url.search);
+  // // const u = q.get("url");
+  
 
-  if (!u) {
-    return new Response("need url=?", {
-      headers: { "content-type": "text/plain", "access-control-allow-origin": "*" },
-    });
-  }
+  // if (!key) {
+  //   return new Response("need url=?", {
+  //     headers: { "content-type": "text/plain", "access-control-allow-origin": "*" },
+  //   });
+  // }
 
-  const resp = await fetch(u, {
-    headers: req.headers,
-    method: req.method,
-    body: req.body,
-  });
-  let headers = new Headers(resp.headers);
-  headers.set("access-control-allow-origin", "*");
-  headers.set("access-control-allow-credentials", "true");
-  return new Response(resp.body, {
-    status: resp.status,
-    headers
-  });
+  await s3upload("test.json",'{"key","key中文"}')
+  
 
+  return new Response(resp.body);
+
+}
+
+async function s3upload(key,body) {
+// Create a S3 instance.
+const s3 = new S3({
+  accessKeyID: Deno.env.get("AWS_ACCESS_KEY_ID")!,
+  secretKey: Deno.env.get("AWS_SECRET_ACCESS_KEY")!,
+  region: "cn-east-1",
+  endpointURL: Deno.env.get("S3_ENDPOINT_URL"),
+});
+bucket = s3.getBucket("tvbox-config");
+  const encoder = new TextEncoder();
+  
+await bucket.putObject(key, encoder.encode(body), {
+  contentType: "text/json",
+});  
 }
 
 serve(handler);
