@@ -3,7 +3,9 @@ import { S3, S3Bucket } from "https://deno.land/x/s3@0.5.0/mod.ts";
 
 async function handler(req: Request): Promise<Response> {
 
-    const key = new URL(req.key) ?? "tvbox/tasks.json";
+    const url = new URL(req.url);
+    const q = new URLSearchParams(url.search);
+    const key = q.get("key") ?? "tvbox/tasks.json";
     let v = await get_all_tasks()
     let txtv = JSON.stringify(v);
     await s3upload("tvbox/tasks.json", txtv)
