@@ -17,7 +17,7 @@ async function handler(req: Request): Promise<Response> {
   await s3upload("test.json",'{"key","key中文"}')
   
 
-  return new Response(resp.body);
+  return new Response("ok");
 
 }
 
