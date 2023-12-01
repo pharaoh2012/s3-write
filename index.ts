@@ -51,6 +51,7 @@ async function get_all_tasks() {
     })
 
     return {
+        "t":new Date(),
         "lives": [
             {
                 "group": "电视",
