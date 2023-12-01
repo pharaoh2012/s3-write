@@ -4,6 +4,10 @@ import { S3, S3Bucket } from "https://deno.land/x/s3@0.5.0/mod.ts";
 async function handler(req: Request): Promise<Response> {
 
     const url = new URL(req.url);
+    if(url.pathname == "/favicon.ico") {
+        console.log("skip favicon.ico");
+        return new Response("404", { status: 404 });
+    }
     const q = new URLSearchParams(url.search);
     const key = q.get("key") ?? "tvbox/tasks.json";
     console.log(key,req.url);
