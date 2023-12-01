@@ -8,7 +8,7 @@ async function handler(req: Request): Promise<Response> {
     const key = q.get("key") ?? "tvbox/tasks.json";
     let v = await get_all_tasks()
     let txtv = JSON.stringify(v);
-    await s3upload("tvbox/tasks.json", txtv)
+    await s3upload(key, txtv)
     return new Response(txtv);
 
 }
