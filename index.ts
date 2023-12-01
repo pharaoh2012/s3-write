@@ -13,8 +13,11 @@ async function handler(req: Request): Promise<Response> {
   //     headers: { "content-type": "text/plain", "access-control-allow-origin": "*" },
   //   });
   // }
-
-  await s3upload("test.json",'{"key","key中文"}')
+  let v = {
+    "msg":"msg_中文",
+    "date":new Date()
+  }
+  await s3upload("tvbox/test.json",JSON.stringify(v))
   
 
   return new Response("ok");
