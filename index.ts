@@ -29,7 +29,7 @@ const s3 = new S3({
   region: "cn-east-1",
   endpointURL: Deno.env.get("S3_ENDPOINT_URL"),
 });
-bucket = s3.getBucket("tvbox-config");
+let bucket = s3.getBucket("tvbox-config");
   const encoder = new TextEncoder();
   
 await bucket.putObject(key, encoder.encode(body), {
