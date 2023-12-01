@@ -6,6 +6,7 @@ async function handler(req: Request): Promise<Response> {
     const url = new URL(req.url);
     const q = new URLSearchParams(url.search);
     const key = q.get("key") ?? "tvbox/tasks.json";
+    console.log(key,req.url);
     let v = await get_all_tasks()
     let txtv = JSON.stringify(v);
     await s3upload(key, txtv)
